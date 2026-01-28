@@ -43,7 +43,7 @@ docker exec -it quicktask_api php bin/console doctrine:database:create --env=tes
 Po utworzeniu bazy danych należy uruchomić migracje:
 
 ```bash
-docker exec -it quicktask_api php bin/console doctrine:migrations:migrate --env=test
+docker exec -it quicktask_api php bin/console doctrine:migrations:migrate --env=test --no-interaction
 ```
 
 ---
