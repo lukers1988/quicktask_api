@@ -1,0 +1,41 @@
+namespace: Tests
+support_namespace: Support
+suites:
+    Unit:
+        path: Unit
+        actor: UnitTester
+        modules:
+            enabled:
+                - Asserts
+
+    Api:
+        actor: ApiTester
+        path: Api
+        modules:
+            enabled:
+                - Symfony:
+                    app_path: 'src'
+                    environment: 'test'
+                - REST:
+                    url: http://localhost/api
+                    depends: Symfony
+                - Doctrine:
+                    depends: Symfony
+                    environment: 'test'
+                    cleanup: true
+                    part: ORM
+
+        step_decorators:
+            - \Codeception\Step\AsJson
+
+    
+
+settings:
+    shuffle: true
+    lint: true
+paths:
+    tests: tests
+    output: tests/_output
+    support: tests/Support
+    data: tests/Support/Data
+     

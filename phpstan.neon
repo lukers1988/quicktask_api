@@ -1,0 +1,10 @@
+parameters:
+    level: 7
+    paths:
+        - src
+    scanDirectories:
+        - %currentWorkingDirectory%/src
+    excludePaths:
+        - %currentWorkingDirectory%/vendor
+        - %currentWorkingDirectory%/var
+        - %currentWorkingDirectory%/tests

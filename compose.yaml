@@ -1,0 +1,55 @@
+version: '3.5'
+
+services:
+###> doctrine/doctrine-bundle ###
+  database:
+    container_name: quicktask_db
+    image: mariadb:11.3
+    environment:
+      MARIADB_DATABASE: quicktask
+      MARIADB_ROOT_PASSWORD: system
+      MARIADB_ROOT_HOST: "%"
+    volumes:
+      - database_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  database_test:
+    container_name: quicktask_db_test
+    image: mariadb:11.3
+    environment:
+      MARIADB_DATABASE: quicktask_test
+      MARIADB_ROOT_PASSWORD: system
+      MARIADB_ROOT_HOST: "%"
+    volumes:
+      - database_test_data:/var/lib/mysql
+    ports:
+      - "3308:3306"
+
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/postgresql/data:rw
+###< doctrine/doctrine-bundle ###
+  backend:
+    container_name: quicktask_api
+    image: php-8.4-fpm-alpine3.19
+    restart: always
+    env_file:
+      - .env
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile
+      target: builder
+    volumes:
+      - ./:/code
+    ports:
+      - "80:80"
+    depends_on:
+      - database
+      - database_test
+
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  database_data:
+  database_test_data:
+###< doctrine/doctrine-bundle ###
